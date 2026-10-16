@@ -1,0 +1,68 @@
+# =============================================================================
+# Movement behavior and habitat selection to guide conservation of an
+# endangered Neotropical deer
+#
+# Alarcón, P.A.E., Crego, R.D., Galetto, E., Aprile, G.,
+# Morales, J.M., Pauli, J.N. & Donadio, E.
+#
+# -----------------------------------------------------------------------------
+# Model:   01_lsm.bug
+# Purpose: JAGS specification of the three-state Latent-State Markov model
+#          (two encamped states E1, E2 and one exploratory state Ex) used to
+#          classify huemul movement strategies, following Bastille-Rousseau
+#          et al. (2016). Priors are flat Dirichlet for the initial state
+#          distribution and each row of the transition matrix.
+# =============================================================================
+
+ model {
+
+   # ---- Emission means ----
+   # mu[1]: low-NSD encamped state
+   # mu[2] = mu[1] + eps: high-NSD encamped state
+   # Separate dunif bounds guarantee mu[2] <= 0.95
+   
+   mu[1] ~ dunif(0, 0.50)
+   eps   ~ dunif(0.05, 0.50)
+   mu[2] <- mu[1] + eps
+   mu[3] <- 0.5              
+   
+   # ---- Emission standard deviations ----
+   sigma[1] ~ dunif(0.01, 0.5)
+   sigma[2] ~ dunif(0.01, 0.5)
+   sigma[3] <- 10
+
+   tau[1] <- pow(sigma[1], -2)
+   tau[2] <- pow(sigma[2], -2)
+   tau[3] <- pow(sigma[3], -2)
+
+   # ---- Initial state distribution ----
+   # Flat Dirichlet: no prior assumption on starting state
+   alpha1[1] <- 1
+   alpha1[2] <- 1
+   alpha1[3] <- 1
+   p_state[1:3] ~ ddirch(alpha1[])
+   idx[1] ~ dcat(p_state[])
+
+   # ---- Transition matrix: flat Dirichlet prior ----
+   alpha[1] <- 1
+   alpha[2] <- 1
+   alpha[3] <- 1
+   trans_mat[1,1:3] ~ ddirch(alpha[])
+   trans_mat[2,1:3] ~ ddirch(alpha[])
+   trans_mat[3,1:3] ~ ddirch(alpha[])
+
+   # ---- LSM: state transitions + emissions + indicator variables ----
+   # s_E1[t], s_E2[t], s_Ex[t] are deterministic 0/1 nodes
+   # Their posterior means = P(state = k at time t | data)
+   s_E1[1] <- equals(idx[1], 1)
+   s_E2[1] <- equals(idx[1], 2)
+   s_Ex[1] <- equals(idx[1], 3)
+
+   for (t in 2:ndays) {
+     idx[t]    ~ dcat(trans_mat[idx[t-1], ])
+     nsd_scl[t] ~ dnorm(mu[idx[t]], tau[idx[t]])
+     s_E1[t]  <- equals(idx[t], 1)
+     s_E2[t]  <- equals(idx[t], 2)
+     s_Ex[t]  <- equals(idx[t], 3)
+   }
+  }
