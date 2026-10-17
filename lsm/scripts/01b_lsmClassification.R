@@ -15,7 +15,7 @@
 
 
 # 1. Data ----
-load("./lsm/data/gpsdata_for_lsm.rda")
+load("./collarData/data/gpsdata_for_lsm.rda")
 load("./lsm/outputs/jags_samp_lsm.rda")
 load("./lsm/outputs/state_prob_lsm.rda")
 

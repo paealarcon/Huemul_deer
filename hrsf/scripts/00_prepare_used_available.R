@@ -31,7 +31,7 @@ SEED_SPLIT   <- 123L
 SEED_AVAIL   <- 124L
 
 # 0.2 Paths -----------------------------------------------------------------
-GPS_FILE          <- file.path(PROJECT, "akde/data/clean_gpsdata.rda")
+GPS_FILE          <- file.path(PROJECT, "collarData/data/clean_gpsdata.rda")
 STACK_FILE        <- file.path(PROJECT, "data/layers/stack_static.tif")
 LC_DIR            <- file.path(PROJECT, "data/layers/habitatTypes")
 AVAIL_DIR         <- file.path(PROJECT, "data/layers/availableHabitat")

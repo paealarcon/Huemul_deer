@@ -16,7 +16,7 @@
 library(jagsUI)
 
 # 1. Data ----
-load("./lsm/data/gpsdata_for_lsm.rda")
+load("./collarData/data/gpsdata_for_lsm.rda")
 
 gpsdataL <- split(gpsdata, gpsdata$animal_id)
 nid      <- length(gpsdataL)
@@ -156,7 +156,7 @@ save(state_probL, file = "./lsm/outputs/state_prob_lsm.rda")
 # 5. MCMC convergence diagnostics ----
 # Effective sample size (n.eff) and Gelman-Rubin statistic (Rhat) for the
 # key stochastic nodes: mu[1], eps, sigma, and trans_mat
-load("./lsm/data/gpsdata_for_lsm.rda")
+load("./collarData/data/gpsdata_for_lsm.rda")
 load("./lsm/outputs/jags_samp_lsm.rda")
 
 gpsdataL <- split(gpsdata, gpsdata$animal_id)

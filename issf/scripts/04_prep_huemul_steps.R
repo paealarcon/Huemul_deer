@@ -32,7 +32,7 @@ suppressPackageStartupMessages({
 PREP_DATA_DIR <- "./old/4. hissf/1. collar_data"
 
 prepare_huemul_steps <- function(
-  gps_file        = "./0. cleaningGPSData/1. gpsFiles/1. clean_gpsdata.rda",
+  gps_file        = "./collarData/data/clean_gpsdata.rda",
   stack_file      = "./0. covariates/_revised/2. stacks/stack_static.tif",
   legacy_stack    = "./0. covariates/_older/stack_issf.tif",
   snow_file       = "./0. covariates/_revised/2. stacks/snow_daily.tif",

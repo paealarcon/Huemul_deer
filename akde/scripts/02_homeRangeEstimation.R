@@ -17,7 +17,7 @@ library(ctmm)
 library(ggplot2)
 
 # 1. Data ----
-load("./akde/data/clean_gpsdata.rda")
+load("./collarData/data/clean_gpsdata.rda")
 
 gpsdata <- subset(gpsdata, !is.na(longitude) & !is.na(latitude))
 
